@@ -2,8 +2,37 @@ import React from 'react';
 
 class ExpenseDetails extends React.Component {
 
+    handleChange(event) {
+        const {expense} = this.state;
+        expense.description = event.target.value;
+
+        this.setState({
+            ...this.state,
+            expense: expense
+        })
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            expense: undefined
+        }
+    }
+
+    componentDidUpdate(nextProps) {
+        if (this.props.expense === this.state.expense) {
+            return;
+        }
+
+        this.setState({
+            ...this.state,
+            expense: this.props.expense
+        })
+    }
+
     render() {
-        if (this.props.selectedExpense === undefined) {
+        if (this.state.expense === undefined) {
             return ("No expense selected");
         }
 
@@ -15,7 +44,7 @@ class ExpenseDetails extends React.Component {
                         Id
                     </td>
                     <td>
-                        {this.props.selectedExpense.id}
+                        {this.state.expense.id}
                     </td>
                 </tr>
                 <tr>
@@ -23,7 +52,7 @@ class ExpenseDetails extends React.Component {
                         Date
                     </td>
                     <td>
-                        {this.props.selectedExpense.created_at}
+                        {this.state.expense.created_at}
                     </td>
                 </tr>
                 <tr>
@@ -31,16 +60,22 @@ class ExpenseDetails extends React.Component {
                         Description
                     </td>
                     <td>
-                        {this.props.selectedExpense.description}
+                        <input type="text"
+                               className="form-control"
+                               value={this.state.expense.description}
+                               onBlur={() => {
+                                   this.props.onExpenseUpdate(this.state.expense);
+                               }}
+                               onChange={this.handleChange.bind(this)}
+                        />
+
                     </td>
                 </tr>
                 <tr>
                     <td>
                         Amount
                     </td>
-                    <td>
-                        {this.props.selectedExpense.amount} {this.props.selectedExpense.currency}
-                    </td>
+                    <td>{this.state.expense.amount}/> {this.state.expense.currency}</td>
                 </tr>
                 </tbody>
             </table>

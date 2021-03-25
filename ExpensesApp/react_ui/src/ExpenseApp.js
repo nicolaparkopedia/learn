@@ -32,12 +32,25 @@ class ExpenseApp extends React.Component {
                         <ExpenseList expenses={this.state.expenses} onExpenseSelect={(expense) => {
                             this.setState({
                                 ...this.state,
-                                selectedExpense: expense
+                                selectedExpense: expense,
                             })
                         }}/>
                     </div>
                     <div className="col">
-                        <ExpenseDetails selectedExpense={this.state.selectedExpense}/>
+                        <ExpenseDetails
+                            expense={this.state.selectedExpense}
+                            onExpenseUpdate={(expense) => {
+                                let api = new ExpensesApi();
+
+                                api.updateExpense(expense)
+                                    .then(() => {
+                                        this.setState({
+                                            ...this.state,
+                                            selectedExpense: undefined
+                                        })
+                                    });
+                            }}
+                        />
                     </div>
                 </div>
             </div>
