@@ -46,7 +46,7 @@ class ExpenseApp extends React.Component {
                                     .then(() => {
                                         this.setState({
                                             ...this.state,
-                                            selectedExpense: undefined
+                                            selectedExpense: expense
                                         })
                                     });
                             }}

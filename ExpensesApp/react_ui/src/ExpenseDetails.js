@@ -4,7 +4,8 @@ class ExpenseDetails extends React.Component {
 
     handleChange(event) {
         const {expense} = this.state;
-        expense.description = event.target.value;
+
+        expense[event.target.id] = event.target.value;
 
         this.setState({
             ...this.state,
@@ -61,6 +62,7 @@ class ExpenseDetails extends React.Component {
                     </td>
                     <td>
                         <input type="text"
+                               id="description"
                                className="form-control"
                                value={this.state.expense.description}
                                onBlur={() => {
@@ -75,7 +77,7 @@ class ExpenseDetails extends React.Component {
                     <td>
                         Amount
                     </td>
-                    <td>{this.state.expense.amount}/> {this.state.expense.currency}</td>
+                    <td>{this.state.expense.amount} {this.state.expense.currency}</td>
                 </tr>
                 </tbody>
             </table>
