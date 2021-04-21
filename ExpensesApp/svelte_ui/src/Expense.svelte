@@ -1,24 +1,24 @@
 <script>
-    export let id
-    export let created_at
-    export let description
-    export let amount
-    export let currency
+    import {createEventDispatcher} from 'svelte';
+
+    const dispatch = createEventDispatcher();
+
+    export let expense
 
     function handleClickExpense() {
-        alert(id);
+        dispatch("selected", {id: expense.id});
     }
-    
+
 </script>
 
 <tr on:click={handleClickExpense}>
     <td>
-        {created_at}
+        {expense.created_at}
     </td>
     <td>
-        {description}
+        {expense.description}
     </td>
     <td>
-        {amount} {currency}
+        {expense.amount} {expense.currency}
     </td>
 </tr>

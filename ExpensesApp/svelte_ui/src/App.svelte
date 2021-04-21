@@ -1,45 +1,61 @@
 <script>
-    import {onMount} from 'svelte';
     import Expense from "./Expense.svelte"
+    import ExpenseEditor from "./ExpenseEditor.svelte";
+
+    import axios from "axios";
 
     let expenses = [];
+    let selectedExpense;
 
-    // In this example we bind directly the components to the data and, asyncronously populate the data.
-    onMount(async () => {
-        const res = await fetch(`http://127.0.0.1:8001/api/expenses/`);
-        expenses = await res.json();
-    });
-
-    // In this example instead we bind the components to the promise and
-    // render different things while the promise is not resolved.
     let getAllExpensesPromise = getAllExpenses();
 
     async function getAllExpenses() {
-        const res = await fetch(`http://127.0.0.1:8001/api/expenses/`);
-        return await res.json();
+        return axios({
+            method: 'get',
+            url: 'http://127.0.0.1:8001/api/expenses/',
+        }).then((response) => {
+            return response.data;
+        });
+
     }
 
+    async function handleExpenseSelected(event) {
+        return axios({
+            method: 'get',
+            url: 'http://127.0.0.1:8001/api/expenses/' + event.detail.id,
+        }).then((response) => {
+            selectedExpense = response.data;
+        });
+    }
+
+    async function handleExpenseSave(event) {
+        selectedExpense = undefined;
+
+        let expense = await event.detail.expense;
+
+        return axios({
+            method: 'patch',
+            url: 'http://127.0.0.1:8001/api/expenses/' + expense.id,
+            data: expense
+        }).then(() => {
+            getAllExpensesPromise = getAllExpenses();
+        });
+    }
 </script>
 
 <main>
-    <h1>Expenses 1</h1>
-    <table>
-        {#each expenses as expense}
-            <Expense {...expense}/>
-        {/each}
-    </table>
-
-    <h1>Expenses 2</h1>
+    <h1>Expenses</h1>
     {#await getAllExpensesPromise}
         <p>...waiting expenses...</p>
     {:then expenses}
         <table>
             {#each expenses as expense}
-                <Expense {...expense}/>
+                <Expense on:selected={handleExpenseSelected} expense={expense}/>
             {/each}
         </table>
     {/await}
 </main>
 
 
+<ExpenseEditor on:save={handleExpenseSave} expense={selectedExpense}/>
 
