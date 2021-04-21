@@ -41,6 +41,19 @@
             getAllExpensesPromise = getAllExpenses();
         });
     }
+
+    async function handleExpenseDelete(event) {
+        selectedExpense = undefined;
+
+        let expenseId = await event.detail.id;
+
+        return axios({
+            method: 'delete',
+            url: 'http://127.0.0.1:8001/api/expenses/' + expenseId,
+        }).then(() => {
+            getAllExpensesPromise = getAllExpenses();
+        });
+    }
 </script>
 
 <main>
@@ -57,5 +70,5 @@
 </main>
 
 
-<ExpenseEditor on:save={handleExpenseSave} expense={selectedExpense}/>
+<ExpenseEditor on:save={handleExpenseSave} on:delete={handleExpenseDelete} expense={selectedExpense}/>
 

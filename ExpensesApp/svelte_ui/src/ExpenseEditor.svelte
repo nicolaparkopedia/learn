@@ -9,6 +9,9 @@
         dispatch("save", {expense: expense});
     }
 
+    function deleteExpense() {
+        dispatch("delete", {id: expense.id});
+    }
 </script>
 
 {#if expense}
@@ -27,6 +30,9 @@
         <tr>
             <td>
                 <input type="button" on:click={saveExpense} value="Save">
+            </td>
+            <td>
+                <input type="button" on:click={deleteExpense} value="Delete">
             </td>
         </tr>
     </table>
