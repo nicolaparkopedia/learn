@@ -70,14 +70,24 @@ class ExpenseDetails extends React.Component {
                                }}
                                onChange={this.handleChange.bind(this)}
                         />
-
                     </td>
                 </tr>
                 <tr>
                     <td>
                         Amount
                     </td>
-                    <td>{this.state.expense.amount} {this.state.expense.currency}</td>
+                    <td>
+                        <input type="text"
+                               id="amount"
+                               className="form-control"
+                               value={this.state.expense.amount}
+                               onBlur={() => {
+                                   this.props.onExpenseUpdate(this.state.expense);
+                               }}
+                               onChange={this.handleChange.bind(this)}
+                        />
+                        {this.state.expense.currency}
+                    </td>
                 </tr>
                 </tbody>
             </table>
