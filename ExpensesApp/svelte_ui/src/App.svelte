@@ -2,9 +2,9 @@
     import axios from "axios";
 
     import Log from "./Log.js"
-    import Expense from "./Expense.svelte"
     import ExpenseEditor from "./ExpenseEditor.svelte";
     import ActionsLog from "./ActionsLog.svelte";
+    import ExpensesList from "./ExpensesList.svelte";
 
     let expenses = [];
     let selectedExpense;
@@ -72,16 +72,13 @@
 </script>
 
 <main>
-    <h1>Expenses</h1>
-    {#await getAllExpensesPromise}
-        <p>...waiting expenses...</p>
-    {:then expenses}
-        <table>
-            {#each expenses as expense}
-                <Expense on:selected={handleExpenseSelected} expense={expense}/>
-            {/each}
-        </table>
-    {/await}
+    <div class="mainContainer">
+        {#await getAllExpensesPromise}
+            <p>...waiting expenses...</p>
+        {:then expenses}
+            <ExpensesList expenses={expenses} on:expenseSelected={handleExpenseSelected}/>
+        {/await}
+    </div>
 </main>
 
 
@@ -90,3 +87,10 @@
 <button on:click={toggleLogVisible}>{logVisible ? "Hide Log" : "Show Log"}</button>
 
 <ActionsLog visible={logVisible}/>
+
+<style>
+    .mainContainer {
+        background-color: aliceblue;
+        padding: 20px;
+    }
+</style>
