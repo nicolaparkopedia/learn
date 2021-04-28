@@ -8,8 +8,13 @@
 
     let expenses = [];
     let selectedExpense;
+    let logVisible = false;
 
     let getAllExpensesPromise = getAllExpenses();
+
+    function toggleLogVisible() {
+        logVisible = !logVisible;
+    }
 
     async function getAllExpenses() {
         Log.add("Get all expenses.");
@@ -82,4 +87,6 @@
 
 <ExpenseEditor on:save={handleExpenseSave} on:delete={handleExpenseDelete} expense={selectedExpense}/>
 
-<ActionsLog/>
+<button on:click={toggleLogVisible}>{logVisible ? "Hide Log" : "Show Log"}</button>
+
+<ActionsLog visible={logVisible}/>

@@ -2,6 +2,8 @@
     import {onDestroy} from "svelte";
     import Log from "./Log.js"
 
+    export let visible;
+
     var parsedLogContent = "";
 
     const unsubscribe = Log.logEntries.subscribe(logEntries => {
@@ -15,7 +17,8 @@
     onDestroy(unsubscribe);
 </script>
 
-<div>
-    {@html parsedLogContent}
-</div>
-
+{#if visible}
+    <div>
+        {@html parsedLogContent}
+    </div>
+{/if}
