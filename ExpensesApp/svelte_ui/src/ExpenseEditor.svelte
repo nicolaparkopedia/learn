@@ -18,9 +18,6 @@
     <table>
         <tr>
             <td>
-                {expense.created_at}
-            </td>
-            <td>
                 <input bind:value="{expense.description}">
             </td>
             <td>

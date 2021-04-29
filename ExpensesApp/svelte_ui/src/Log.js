@@ -17,6 +17,14 @@ export default class Log {
             return [...operation, logEntry];
         });
     }
+
+    static clear() {
+        localStorage.setItem("logEntries", JSON.stringify([]))
+
+        Log.logEntries.update(operation => {
+            return [];
+        });
+    }
 }
 
 // Persist the log in the local storage.

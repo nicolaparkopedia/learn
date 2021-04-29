@@ -25,16 +25,17 @@
 
 <style>
     .expenseTable {
-        border: 1px solid lightgrey;
+        /*border: 1px solid lightgrey;*/
         border-radius: 10px;
         background-color: white;
     }
 
     .expensesHeader {
+        border-radius: 10px 10px 0 0;
         display: grid;
-        grid-template: 50px / 0.6fr 1.4fr 1fr;
+        grid-template: 10px / 0.6fr 1.4fr 1fr;
         text-align: left;
-        border-bottom: 1px solid black;
+        /*border-bottom: 1px solid black;*/
         padding: 15px;
         background-color: lightsteelblue;
         text-transform: uppercase;

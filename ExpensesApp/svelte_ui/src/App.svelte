@@ -1,96 +1,90 @@
 <script>
-    import axios from "axios";
-
-    import Log from "./Log.js"
     import ExpenseEditor from "./ExpenseEditor.svelte";
-    import ActionsLog from "./ActionsLog.svelte";
+    import Log from "./Log.svelte";
     import ExpensesList from "./ExpensesList.svelte";
+    import ExpensesApi from "./ExpensesApi";
 
-    let expenses = [];
     let selectedExpense;
-    let logVisible = false;
 
     let getAllExpensesPromise = getAllExpenses();
 
-    function toggleLogVisible() {
-        logVisible = !logVisible;
-    }
-
     async function getAllExpenses() {
-        Log.add("Get all expenses.");
-
-        return axios({
-            method: "get",
-            url: "http://127.0.0.1:8001/api/expenses/",
-        }).then((response) => {
-            return response.data;
-        });
-
+        return await ExpensesApi.getAll();
     }
 
     async function handleExpenseSelected(event) {
-        Log.add("Get an expense.");
-
-        return axios({
-            method: "get",
-            url: `http://127.0.0.1:8001/api/expenses/${event.detail.id}`,
-        }).then((response) => {
-            selectedExpense = response.data;
-        });
+        selectedExpense = await ExpensesApi.get(event.detail.id);
     }
 
     async function handleExpenseSave(event) {
-        Log.add("Save an expense.");
-
         selectedExpense = undefined;
 
-        let expense = await event.detail.expense;
+        await ExpensesApi.update(event.detail.expense);
 
-        return axios({
-            method: "patch",
-            url: `http://127.0.0.1:8001/api/expenses/${expense.id}`,
-            data: expense
-        }).then(() => {
-            getAllExpensesPromise = getAllExpenses();
-        });
+        getAllExpensesPromise = getAllExpenses();
     }
 
     async function handleExpenseDelete(event) {
-        Log.add("Delete an expense.");
-
         selectedExpense = undefined;
 
-        let expenseId = await event.detail.id;
+        await ExpensesApi.delete(event.detail.id);
 
-        return axios({
-            method: "delete",
-            url: `http://127.0.0.1:8001/api/expenses/${expenseId}`,
-        }).then(() => {
-            getAllExpensesPromise = getAllExpenses();
-        });
+        getAllExpensesPromise = getAllExpenses();
     }
 </script>
 
 <main>
     <div class="mainContainer">
-        {#await getAllExpensesPromise}
-            <p>...waiting expenses...</p>
-        {:then expenses}
-            <ExpensesList expenses={expenses} on:expenseSelected={handleExpenseSelected}/>
-        {/await}
+        <div>
+            {#await getAllExpensesPromise}
+                <p>...waiting expenses...</p>
+            {:then expenses}
+                <ExpensesList expenses={expenses} on:expenseSelected={handleExpenseSelected}/>
+            {/await}
+        </div>
+
+        <div>
+            <Log/>
+        </div>
     </div>
 </main>
 
-
-<ExpenseEditor on:save={handleExpenseSave} on:delete={handleExpenseDelete} expense={selectedExpense}/>
-
-<button on:click={toggleLogVisible}>{logVisible ? "Hide Log" : "Show Log"}</button>
-
-<ActionsLog visible={logVisible}/>
+{#if selectedExpense !== undefined}
+    <div class="modal">
+        <div class="modal-content">
+            <ExpenseEditor on:save={handleExpenseSave} on:delete={handleExpenseDelete} expense={selectedExpense}/>
+        </div>
+    </div>
+{/if}
 
 <style>
     .mainContainer {
-        background-color: aliceblue;
+        background-color: whitesmoke;
         padding: 20px;
+    }
+
+    .mainContainer div {
+        margin: 20px;
+    }
+
+    .modal {
+        display: block;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
     }
 </style>
