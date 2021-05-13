@@ -8,9 +8,9 @@
     <div v-if="loading">
       Loading...
     </div>
-    <div v-if="!loading">
+    <div v-else>
       <div v-for="expense in expenses" :key="expense.id">
-        <Expense :expense="expense"></Expense>
+        <Expense :expense="expense" v-on:click="onExpenseSelected(expense.id)"></Expense>
       </div>
     </div>
 
@@ -27,13 +27,17 @@ export default {
   props: {
     expenses: Array,
     loading: Boolean
+  },
+  methods: {
+    onExpenseSelected(event) {
+      this.$emit("expense-selected", event);
+    }
   }
 }
 </script>
 
 <style scoped>
 .expenseTable {
-  /*border: 1px solid lightgrey;*/
   border-radius: 10px;
   background-color: white;
 }
@@ -43,7 +47,6 @@ export default {
   display: grid;
   grid-template: 10px / 0.6fr 1.4fr 1fr;
   text-align: left;
-  /*border-bottom: 1px solid black;*/
   padding: 15px;
   background-color: lightsteelblue;
   text-transform: uppercase;
