@@ -5,7 +5,7 @@ export default class ExpensesApi {
 
         return axios({
             method: "get",
-            url: "http://127.0.0.1:8001/api/expenses/",
+            url: "http://127.0.0.1:8002/api/expenses/",
         }).then((response) => {
             return response.data;
         });
@@ -16,7 +16,7 @@ export default class ExpensesApi {
 
         return axios({
             method: "get",
-            url: `http://127.0.0.1:8001/api/expenses/${id}`,
+            url: `http://127.0.0.1:8002/api/expenses/${id}`,
         }).then((response) => {
             return response.data;
         });
@@ -26,7 +26,7 @@ export default class ExpensesApi {
 
         return axios({
             method: "patch",
-            url: `http://127.0.0.1:8001/api/expenses/${expense.id}`,
+            url: `http://127.0.0.1:8002/api/expenses/${expense.id}`,
             data: expense
         }).then((response) => {
             return response.data;
@@ -37,7 +37,7 @@ export default class ExpensesApi {
 
         return axios({
             method: "delete",
-            url: `http://127.0.0.1:8001/api/expenses/${id}`,
+            url: `http://127.0.0.1:8002/api/expenses/${id}`,
         }).then((response) => {
             return response.data;
         });

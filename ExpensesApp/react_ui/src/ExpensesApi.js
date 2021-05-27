@@ -5,7 +5,7 @@ class ExpensesApi {
     getExpenses() {
         return axios({
             method: 'get',
-            url: 'http://127.0.0.1:8001/api/expenses/',
+            url: 'http://127.0.0.1:8002/api/expenses/',
         }).then((response) => {
             return response.data;
         });
@@ -14,7 +14,7 @@ class ExpensesApi {
     updateExpense(expense) {
         return axios({
             method: 'patch',
-            url: 'http://127.0.0.1:8001/api/expenses/' + expense.id,
+            url: 'http://127.0.0.1:8002/api/expenses/' + expense.id,
             data: expense
         }).then((response) => {
             return response.data;
