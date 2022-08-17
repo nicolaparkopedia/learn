@@ -4,12 +4,10 @@
 
     var parsedLogContent = "";
 
-    const unsubscribe = Log.logEntries.subscribe(logEntries => {
-        parsedLogContent = "";
-
-        logEntries.reduceRight((_, logEntry) => {
-            parsedLogContent += logEntry.time + " - " + logEntry.message + "<br/>";
-        }, null)
+    const unsubscribe = Log.logEntries.subscribe((logEntries) => {
+        parsedLogContent = logEntries.reduceRight((reduced, logEntry) => {
+            return reduced + logEntry.time + " - " + logEntry.message + "<br/>";
+        }, "")
     });
 
     onDestroy(unsubscribe);

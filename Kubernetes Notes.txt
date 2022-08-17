@@ -1,0 +1,102 @@
+- open source
+- initially developed by Google
+- system for running and coordinating containerized applications across a cluster of machines
+
+As a Kubernetes user, you can define how your applications should run and the ways they should be able to interact with other applications or the outside world. You can scale your services up or down, perform graceful rolling updates, and switch traffic between different versions of your applications to test features or rollback problematic deployments. Kubernetes provides interfaces and composable platform primitives that allow you to define and manage your applications with high degrees of flexibility, power, and reliability.
+
+Run kubernetes locally:
+https://jamesdefabia.github.io/docs/getting-started-guides/docker/
+
+
+
+Kubernetes uses Linux container technologies to provide isolation of running applications
+
+Instead of using virtual machines to isolate the environments of each microservice (or
+software processes in general), developers are turning to Linux container technologies. They allow you to run multiple services on the same host machine, while not only
+exposing a different environment to each of them, but also isolating them from each
+other, similarly to VMs, but with much less overhead.
+
+Compared to VMs, containers are much more lightweight, which allows you to run
+higher numbers of software components on the same hardware, mainly because each
+VM needs to run its own set of system processes, which requires additional compute
+resources in addition to those consumed by the component’s own process. A container, on the other hand, is nothing more than a single isolated process running in
+the host OS, consuming only the resources that the app consumes and without the overhead of any additional processes. 
+
+
+https://kubernetes.io/docs/
+
+-----------------------
+Locally with Kind
+
+Kind: to run kubenetes clusters locally
+https://kind.sigs.k8s.io/docs/user/quick-start/
+
+To manage the cluster:
+https://kubernetes.io/docs/reference/kubectl/overview/
+
+kind create cluster --name expenses
+
+kind delete cluster --name test
+
+kind get clusters
+
+kubectl cluster-info --context kind-kind
+
+------------------------
+Locally with docker, this is the only version I got working:
+
+export K8S_VERSION=v1.2.2
+
+docker run \
+    --volume=/:/rootfs:ro \
+    --volume=/sys:/sys:ro \
+    --volume=/var/lib/docker/:/var/lib/docker:rw \
+    --volume=/var/lib/kubelet/:/var/lib/kubelet:rw \
+    --volume=/var/run:/var/run:rw \
+    --pid=host \
+    --privileged=true \
+    --name=kubelet \
+    -p 8080:8080 \
+    -d \
+    gcr.io/google_containers/hyperkube-amd64:${K8S_VERSION} \
+    /hyperkube kubelet \
+        --containerized \
+        --hostname-override="127.0.0.1" \
+        --address="0.0.0.0" \
+        --api-servers=http://0.0.0.0:8080 \
+        --config=/etc/kubernetes/manifests \
+        --allow-privileged=true --v=2
+
+
+
+docker logs -t containerName
+
+docker container prune
+
+------------------------------------------
+https://learning.edx.org/course/course-v1:LinuxFoundationX+LFS158x+3T2020/block-v1:LinuxFoundationX+LFS158x+3T2020+type@sequential+block@b9b38f7bcd994388a9bf5278c2576279/block-v1:LinuxFoundationX+LFS158x+3T2020+type@vertical+block@96785b77a0dd4394a6e24dbc62e2fd04
+
+
+------------------------
+
+Notes for presentation:
+
+Explain what a monolith is.
+Discuss the monolith's challenges in the cloud.
+Explain the concept of microservices.
+Discuss microservices advantages in the cloud.
+Describe the transformation path from a monolith to microservices.
+
+container orchestrator
+
+Microservices run in a container, containers run container images
+
+A container image bundles the application along with its runtime, libraries, and dependencies, and it represents the source of a container deployed to offer an isolated executable environment for the application. Containers can be deployed from a specific image on many platforms, such as workstations, Virtual Machines, public cloud, etc.
+
+
+
+
+
+
+
+

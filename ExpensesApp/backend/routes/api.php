@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/expenses", function (Request $request) {
     // Sleep a bit so we can see how the UI renders on slow connection.
-    //sleep(2);
+    //sleep(4);
 
     return response(json_encode(Expense::all()),
         200, ["Content-Type" => "application/json"]);

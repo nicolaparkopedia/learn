@@ -7,26 +7,26 @@ export default class Log {
     static logEntries = writable(JSON.parse(localStorage.getItem("logEntries")) || []);
 
     static add(message) {
-        Log.logEntries.update(operation => {
+        Log.logEntries.update((entries) => {
 
             var logEntry = {
                 "time": moment().toISOString(),
                 "message": message
             };
 
-            return [...operation, logEntry];
+            return [...entries, logEntry];
         });
     }
 
     static clear() {
         localStorage.setItem("logEntries", JSON.stringify([]))
 
-        Log.logEntries.update(operation => {
+        Log.logEntries.update(() => {
             return [];
         });
     }
 }
 
 // Persist the log in the local storage.
-Log.logEntries.subscribe(val => localStorage.setItem("logEntries", JSON.stringify(val)));
+Log.logEntries.subscribe((entries) => localStorage.setItem("logEntries", JSON.stringify(entries)));
 

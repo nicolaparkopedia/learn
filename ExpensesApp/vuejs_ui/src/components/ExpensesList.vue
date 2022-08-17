@@ -10,7 +10,7 @@
     </div>
     <div v-else>
       <div v-for="expense in expenses" :key="expense.id">
-        <Expense :expense="expense" v-on:click="onExpenseSelected(expense.id)"></Expense>
+        <Expense :expense=expense v-on:click="onExpenseSelected(expense.id)"></Expense>
       </div>
     </div>
 

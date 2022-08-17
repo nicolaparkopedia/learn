@@ -38,7 +38,7 @@ custom:
     stages:
       - ${self:provider.stage}
     start:
-      inMemory: true
+      dbPath: /tmp/
       migrate: true
   envPath:
     local: .env-local
